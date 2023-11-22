@@ -2,6 +2,8 @@
 """ Console Module """
 import cmd
 import sys
+import uuid
+from datetime import datetime
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
@@ -113,15 +115,55 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method of CMD """
         pass
 
-    def do_create(self, args):
-        """ Create an object of any class"""
-        if not args:
+    def do_create(self, arg):
+        """Create an object of any class with given parameters"""
+        if not arg:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+
+        # Split the arguments into class name and parameters
+        parts = arg.split(" ", 1)
+        class_name = parts[0]
+        params = parts[1] if len(parts) > 1 else ""
+
+        if class_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
+
+        # Parse and create a dictionary of parameters
+        param_dict = {}
+        for param in params.split():
+            key, _, value = param.partition("=")
+            if not key or not value:
+                print(f"Invalid parameter: {param}")
+                continue
+
+            # Handle string values
+            if value.startswith('"') and value.endswith('"'):
+                value = value[1:-1].replace('\\"', '"').replace('_', ' ')
+
+            # Try to cast numeric values
+            try:
+                if '.' in value:
+                    value = float(value)
+                else:
+                    value = int(value)
+            except ValueError:
+                pass
+
+            param_dict[key] = value
+
+        # Check if required keys are present in param_dict, otherwise set default values
+        required_keys = ['id', 'created_at', 'updated_at']
+        for key in required_keys:
+            if key not in param_dict:
+                if key == 'id':
+                    param_dict[key] = str(uuid.uuid4())
+                else:
+                    param_dict[key] = datetime.now().strftime('%Y-%m-%dT%H:%M:%S.%f')
+
+        # Create an instance with the given parameters
+        new_instance = HBNBCommand.classes[class_name](**param_dict)
         storage.save()
         print(new_instance.id)
         storage.save()
