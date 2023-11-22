@@ -97,3 +97,13 @@ class test_basemodel(unittest.TestCase):
         n = new.to_dict()
         new = BaseModel(**n)
         self.assertFalse(new.created_at == new.updated_at)
+
+    def test_all_attributes_are_present(self):
+        """ """
+        self.city_no_kwargs = City()
+        self.city_no_kwargs.save()
+        self.assertTrue(hasattr(self.city_no_kwargs, "id"))
+        self.assertTrue(hasattr(self.city_no_kwargs, "state_id"))
+        self.assertTrue(hasattr(self.city_no_kwargs, "name"))
+        self.assertTrue(hasattr(self.city_no_kwargs, "created_at"))
+        self.assertTrue(hasattr(self.city_no_kwargs, "updated_at"))
