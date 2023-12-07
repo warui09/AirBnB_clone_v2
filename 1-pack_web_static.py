@@ -4,15 +4,14 @@
 import datetime
 import os
 import tarfile
-from fabric import task
+from fabric.api import *
 
 output_folder = 'versions'
 output_filename = f"{output_folder}/web_static_{datetime.datetime.now().strftime('%Y%m%d%H%M%S')}.tgz"
 source_dir = 'web_static'
-env.hosts = ['174.129.55.61', '100.26.175.71']
+hosts = ['174.129.55.61', '100.26.175.71']
 
-@task
-def do_pack(c):
+def do_pack():
     # Create output folder if it doesn't exist
     if not os.path.exists(output_folder):
         os.makedirs(output_folder)

@@ -4,11 +4,12 @@
 import datetime
 import os
 import tarfile
-from fabric import task
+from invoke import task
 
 output_folder = 'versions'
 output_filename = f"{output_folder}/web_static_{datetime.datetime.now().strftime('%Y%m%d%H%M%S')}.tgz"
 source_dir = 'web_static'
+hosts = ['174.129.55.61', '100.26.175.71']
 
 @task
 def do_pack(c):
