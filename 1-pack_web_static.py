@@ -1,22 +1,35 @@
 #!/usr/bin/python3
-"""Generates a .tgz archive from the contents of the web_static folder"""
+"""
+Create archive from the contents of web_static
+"""
 
-import datetime
-import os
-import tarfile
+from fabric import task
 from fabric.api import *
+from datetime import datetime
+import os
 
-output_folder = 'versions'
-output_filename = f"{output_folder}/web_static_{datetime.datetime.now().strftime('%Y%m%d%H%M%S')}.tgz"
-source_dir = 'web_static'
-env.hosts = ['174.129.55.61', '100.26.175.71']
-
+@task
 def do_pack():
-    # Create output folder if it doesn't exist
-    if not os.path.exists(output_folder):
-        os.makedirs(output_folder)
+    """
+    Generate a .tgz archive from the contents of the web_static folder
+    """
+    try:
+        # Create the 'versions' folder if it doesn't exist
+        local("mkdir -p versions")
 
-    with tarfile.open(output_filename, 'w:gz') as tar:
-        tar.add(source_dir, arcname=os.path.basename(source_dir))
+        # Get the current date and time
+        now = datetime.now()
+        timestamp = now.strftime("%Y%m%d%H%M%S")
 
-    return output_filename
+        # Set the archive filename
+        archive_name = "web_static_{}.tgz".format(timestamp)
+
+        # Compress the web_static folder into a .tgz archive
+        local("tar -cvzf versions/{} web_static".format(archive_name))
+
+        # Return the archive path
+        return os.path.join("versions", archive_name)
+    except Exception as e:
+        # Print an error message (you can customize this part)
+        print("Error creating archive: {}".format(e))
+        return None

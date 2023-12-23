@@ -58,4 +58,4 @@ EOF
 # Restart Nginx
 sudo service nginx restart
 
-echo "Nginx configuration updated. Content of $serve_directory will be served at https://mydomainname.tech$url_path"
+echo "Nginx configuration updated. Content of $serve_directory will be served at https://warui09.tech$url_path"
