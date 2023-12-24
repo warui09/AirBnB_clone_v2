@@ -1,0 +1,18 @@
+#!/bin/bash
+
+# Create archive from the contents of web_static
+
+# Create the 'versions' folder if it doesn't exist
+mkdir -p versions
+
+# Get the current date and time
+timestamp=$(date +"%Y%m%d%H%M%S")
+
+# Set the archive filename
+archive_name="web_static_${timestamp}.tgz"
+
+# Compress the web_static folder into a .tgz archive
+tar -cvzf "versions/${archive_name}" web_static
+
+# Print the archive path
+echo "Archive created: versions/${archive_name}"

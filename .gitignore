@@ -1,3 +1,5 @@
 console_one.py
 test_params_create
 0-transfer_file
+fabfile.py
+install_fabric
