@@ -10,9 +10,6 @@ import os
 
 @task
 def do_pack():
-    """
-    Generate a .tgz archive from the contents of the web_static folder
-    """
     try:
         # Create the 'versions' folder if it doesn't exist
         local("mkdir -p versions")
