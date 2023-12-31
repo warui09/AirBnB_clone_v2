@@ -6,6 +6,7 @@ Routes:
     /c/<text>: display “C ” followed by the value of the text variable
     /python/<text>: display “Python ”, followed by the value of the text
                     variable
+    /number/<n>: display “n is a number” only if n is an integer
 """
 
 from flask import Flask, render_template, abort
@@ -47,6 +48,16 @@ def python_is_cool(text="is cool"):
         text = text.replace("_", " ")
         return f"Python {text}"
     except Exception as e:
+        abort(404)
+
+
+@app.route("/number/<n>", strict_slashes=False)
+def is_number(n):
+    """Display “n is a number” if n is an integer"""
+    try:
+        n = int(n)
+        return f"{n} is a number"
+    except ValueError:
         abort(404)
 
 
