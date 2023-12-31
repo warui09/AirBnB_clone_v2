@@ -38,17 +38,16 @@ def c_is_fun(text):
         abort(404)
 
 
+@app.route("/python", strict_slashes=False)
 @app.route("/python/<text>", strict_slashes=False)
-def python_is_cool(text):
+def python_is_cool(text="is cool"):
     """Display 'Python' followed by value of text with underscores replaced
     spaces"""
     try:
-        if not text:
-            text = "is cool"
         text = text.replace("_", " ")
         return f"Python {text}"
     except Exception as e:
-        abort(404)
+        print(f"Error: {e}")
 
 
 @app.errorhandler(404)
