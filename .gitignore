@@ -4,3 +4,4 @@ test_params_create
 fabfile.py
 install_fabric
 bash_deploy
+7-dump.sql
